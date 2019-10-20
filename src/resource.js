@@ -23,7 +23,8 @@
  ****************************************************************************/
 
 var res = {
-    HelloWorld_png : "res/HelloWorld.png",
+    spr_all5_4A2_png: "res/spr_all5_4A2.png",
+    board_tmx: "res/board.tmx"
 };
 
 var g_resources = [];

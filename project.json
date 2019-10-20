@@ -15,6 +15,7 @@
     "src/resource.js",
     "src/app.js",
     "src/model/Model.js",
+    "src/model/Board.js",
     "src/view/View.js",
     "src/controller/Controller.js"
   ]
