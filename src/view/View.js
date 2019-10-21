@@ -9,6 +9,10 @@ function View(model) {
 
 View.prototype.update = function (dt) {
     this._pacMan.draw();
+    this._shadow.draw();
+    this._speedy.draw();
+    this._bashful.draw();
+    this._pokey.draw();
 };
 
 View.prototype.getBoard = function () {

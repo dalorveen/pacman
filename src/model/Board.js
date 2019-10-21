@@ -17,13 +17,17 @@ Board.prototype.getTileSize = function () {
     return this._tiledMap.getTileSize();
 };
 
+Board.prototype.getSizeInTiles = function () {
+    return this._tiledMap.getMapSize();
+}
+
 Board.prototype.getSpawnPoint = function (characterName) {
-    const character = this.character(characterName);
+    var character = this.character(characterName);
     return cc.p(character.x, character.y);
 };
 
 Board.prototype.character = function (name) {
-    const characters = this._tiledMap.getObjectGroup("characters");
+    var characters = this._tiledMap.getObjectGroup("characters");
     return characters.getObject(name);
 };
 

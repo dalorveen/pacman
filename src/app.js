@@ -30,7 +30,7 @@ var BoardLayer = cc.Layer.extend({
     ctor: function () {
         this._super();
         
-        const tiledMap = new cc.TMXTiledMap(res.board_tmx);
+        var tiledMap = new cc.TMXTiledMap(res.board_tmx);
         this.model = new Model(tiledMap);
         
         this.view = new View(this.model);

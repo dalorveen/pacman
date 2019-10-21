@@ -8,7 +8,7 @@ PacManModel.prototype = Object.create(CharacterModel.prototype);
 PacManModel.prototype.constructor = PacManModel;
 
 PacManModel.prototype.update = function (dt, board) {
-    this.move(board, this._directionChosenByUser, 0.12);
+    this.move(board, this._directionChosenByUser, 0.15);
 }
 
 PacManModel.prototype.setDirectionChosenByUser = function (direction) {

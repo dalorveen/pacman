@@ -19,6 +19,8 @@
     "src/model/PacManModel.js",
     "src/model/GhostModel.js",
     "src/model/Board.js",
+    "src/model/Waypoint.js",
+    "src/model/Navigator.js",
     "src/view/View.js",
     "src/view/CharacterView.js",
     "src/view/PacManView.js",

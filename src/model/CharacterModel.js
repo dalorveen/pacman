@@ -1,4 +1,4 @@
-const directions = {
+var directions = {
     none: 0,
     right: 1,
     left: 2,
@@ -104,11 +104,8 @@ CharacterModel.prototype.canMoveTo = function (board, direction) {
         }
     } else {
         if (this.isSnapToTile()) {
-            const x = Math.floor(this._location.x / board.getTileSize().width);
-            const y = Math.floor(
-                (board.getSizeInPixels().height - this._location.y) / board.getTileSize().height) - 1;
-            const coordinatesOfAdjacentTile = this.coordinatesOfAdjacentTile(cc.p(x, y), direction);
-            const wall = board.getWall(coordinatesOfAdjacentTile);
+            var coordinatesOfAdjacentTile = this.coordinatesOfAdjacentTile(this.coordinatesOfOccupiedTile(board), direction);
+            var wall = board.getWall(coordinatesOfAdjacentTile);
             return wall === null;
         } else if (direction === directions.right || direction === directions.left) {
             return this.isSnapToTileByY();
@@ -119,10 +116,10 @@ CharacterModel.prototype.canMoveTo = function (board, direction) {
 }
 
 CharacterModel.prototype.isTunnel = function (board) {
-    const crossedRightBorder = this._location.x > board.getSizeInPixels().width - board.getTileSize().width;
-    const crossedLeftBorder = this._location.x < 0;
-    const crossedTopBorder = this._location.y > board.getSizeInPixels().height - board.getTileSize().height;
-    const crossedBottomBorder = this._location.y < 0;
+    var crossedRightBorder = this._location.x > board.getSizeInPixels().width - board.getTileSize().width;
+    var crossedLeftBorder = this._location.x < 0;
+    var crossedTopBorder = this._location.y > board.getSizeInPixels().height - board.getTileSize().height;
+    var crossedBottomBorder = this._location.y < 0;
     return crossedRightBorder || crossedLeftBorder || crossedTopBorder || crossedBottomBorder;
 }
 
@@ -139,8 +136,8 @@ CharacterModel.prototype.isSnapToTileByY = function () {
 }
 
 CharacterModel.prototype.coordinatesOfAdjacentTile = function (originalCoordinates, direction) {
-    let x = 0;
-    let y = 0;
+    var x = 0;
+    var y = 0;
 
     switch (direction) {
         case directions.right:
@@ -158,6 +155,13 @@ CharacterModel.prototype.coordinatesOfAdjacentTile = function (originalCoordinat
     }
 
     return cc.p(originalCoordinates.x + x, originalCoordinates.y + y);
+}
+
+CharacterModel.prototype.coordinatesOfOccupiedTile = function (board) {
+    var x = Math.floor(this._location.x / board.getTileSize().width);
+    var y = Math.floor(
+        (board.getSizeInPixels().height - this._location.y) / board.getTileSize().height) - 1;
+    return cc.p(x, y);
 }
 
 CharacterModel.prototype._moveRight = function (board) {
