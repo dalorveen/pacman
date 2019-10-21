@@ -7,6 +7,10 @@ function Model(tiledMap) {
     this._pokey = new GhostModel(this._board.getSpawnPoint("clyde"), "clyde");
 }
 
+Model.prototype.update = function (dt) {
+    this._pacMan.update(dt, this._board);
+};
+
 Model.prototype.getBoard = function() {
     return this._board;
 };

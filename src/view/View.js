@@ -7,6 +7,10 @@ function View(model) {
     this._pokey = new GhostView(model.getPokey());
 }
 
+View.prototype.update = function (dt) {
+    this._pacMan.draw();
+};
+
 View.prototype.getBoard = function () {
     return this._model.getBoard().getTiledMap();
 };

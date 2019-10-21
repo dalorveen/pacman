@@ -43,7 +43,23 @@ var BoardLayer = cc.Layer.extend({
         
         this.controller = new Controller(this.model);
 
+        cc.eventManager.addListener({
+            event: cc.EventListener.KEYBOARD,
+            onKeyPressed: function (keyCode, event) {
+                event.getCurrentTarget().controller.onKeyPressed(keyCode);
+            },
+            onKeyReleased: function (keyCode, event) {
+                event.getCurrentTarget().controller.onKeyReleased(keyCode);
+            }
+        }, this);
+
+        this.scheduleUpdate();
+
         return true;
+    },
+    update: function (dt) {
+        this.model.update(dt);
+        this.view.update(dt);
     }
 });
 
