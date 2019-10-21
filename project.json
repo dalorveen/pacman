@@ -15,8 +15,14 @@
     "src/resource.js",
     "src/app.js",
     "src/model/Model.js",
+    "src/model/CharacterModel.js",
+    "src/model/PacManModel.js",
+    "src/model/GhostModel.js",
     "src/model/Board.js",
     "src/view/View.js",
+    "src/view/CharacterView.js",
+    "src/view/PacManView.js",
+    "src/view/GhostView.js",
     "src/controller/Controller.js"
   ]
 }

@@ -35,6 +35,11 @@ var BoardLayer = cc.Layer.extend({
         
         this.view = new View(this.model);
         this.addChild(this.view.getBoard(), 0);
+        this.addChild(this.view.getPacMan(), 1);
+        this.addChild(this.view.getShadow(), 1);
+        this.addChild(this.view.getSpeedy(), 1);
+        this.addChild(this.view.getBashful(), 1);
+        this.addChild(this.view.getPokey(), 1);
         
         this.controller = new Controller(this.model);
 
