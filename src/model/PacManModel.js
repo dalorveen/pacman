@@ -19,6 +19,16 @@ PacManModel.prototype.update = function (dt, board) {
             // this._event.setUserData("isEnergizerEaten");
             cc.eventManager.dispatchEvent(this._event);
         }
+
+        var dot = board.getDot(this.coordinatesOfOccupiedTile(board));
+        if (dot !== null && dot.isVisible()) {
+            dot.setVisible(false);
+        }
+
+        var fruit = board.getFruit(this.coordinatesOfOccupiedTile(board));
+        if (fruit !== null && fruit.isVisible()) {
+            fruit.setVisible(false);
+        }
     }
 }
 

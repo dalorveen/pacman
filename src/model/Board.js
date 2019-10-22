@@ -46,6 +46,20 @@ Board.prototype.getEnergizer = function (coordinates) {
     return null;
 }
 
+Board.prototype.getDot = function (coordinates) {
+    if (this.valid(coordinates)) {
+        return this._tiledMap.getLayer("dots").getTileAt(coordinates);
+    }
+    return null;
+}
+
+Board.prototype.getFruit = function (coordinates) {
+    if (this.valid(coordinates)) {
+        return this._tiledMap.getLayer("fruit").getTileAt(coordinates);
+    }
+    return null;
+}
+
 Board.prototype.valid = function (coordinates) {
     if (coordinates === null) {
         return false;
