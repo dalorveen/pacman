@@ -73,7 +73,7 @@ GhostModel.prototype.update = function (dt, board, pacManModel) {
         case ghostModes.blueFrightened:
         case ghostModes.whiteFrightened:
             if (this.isCollision(board, pacManModel)) {
-                // eat
+                pacManModel.chaseAwayGhost();
                 this._ghostMode = ghostModes.consumed;
                 this._consume(board);
             } else {

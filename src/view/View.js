@@ -5,6 +5,7 @@ function View(model) {
     this._speedy = new GhostView(model.getSpeedy());
     this._bashful = new GhostView(model.getBashful());
     this._pokey = new GhostView(model.getPokey());
+    this._text = new TextView(model);
 }
 
 View.prototype.update = function (dt) {
@@ -13,6 +14,7 @@ View.prototype.update = function (dt) {
     this._speedy.draw();
     this._bashful.draw();
     this._pokey.draw();
+    this._text.draw();
 };
 
 View.prototype.getBoard = function () {
@@ -37,4 +39,12 @@ View.prototype.getBashful = function () {
 
 View.prototype.getPokey = function () {
     return this._pokey.getSprite();
+};
+
+View.prototype.getLabelScore = function () {
+    return this._text.getLabelScore();
+};
+
+View.prototype.getLabelScoreCounter = function () {
+    return this._text.getLabelScoreCounter();
 };

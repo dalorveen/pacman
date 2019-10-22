@@ -40,6 +40,8 @@ var BoardLayer = cc.Layer.extend({
         this.addChild(this.view.getSpeedy(), 1);
         this.addChild(this.view.getBashful(), 1);
         this.addChild(this.view.getPokey(), 1);
+        this.addChild(this.view.getLabelScore(), 2);
+        this.addChild(this.view.getLabelScoreCounter(), 2);
         
         this.controller = new Controller(this.model);
 
