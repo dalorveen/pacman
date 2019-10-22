@@ -13,3 +13,11 @@ CharacterView.prototype.getSprite = function () {
 CharacterView.prototype.draw = function () {
     this._sprite.setPosition(this._characterModel.getLocation());
 };
+
+CharacterView.prototype.getCharacterModel = function () {
+    return this._characterModel;
+};
+
+CharacterView.prototype.setSprite = function (sprite) {
+    this._sprite = sprite;
+};

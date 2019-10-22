@@ -105,8 +105,8 @@ cc.game.onStart = function(){
     
     //load resources
     cc.LoaderScene.preload(g_resources, function () {
-        //cc.director.setDepthTest(true);
-        cc.director.setProjection(cc.Director.PROJECTION_2D);
+        // cc.director.setDepthTest(true);
+        // cc.director.setProjection(cc.Director.PROJECTION_2D);
         cc.director.runScene(new BoardScene());
     }, this);
 };

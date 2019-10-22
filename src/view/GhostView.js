@@ -15,3 +15,12 @@ function GhostView(characterModel) {
 GhostView.prototype = Object.create(CharacterView.prototype);
 
 GhostView.prototype.constructor = GhostView;
+
+GhostView.prototype.draw = function () {
+    CharacterView.prototype.draw.call(this);
+    
+    var ghostModel = this.getCharacterModel();
+    if (ghostModel.getGhostMode() === ghostModes.blueFrightened) {
+        this._sprite.setTextureRect(cc.rect(190, 190, 20, 20));
+    }
+};

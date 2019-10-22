@@ -32,10 +32,24 @@ Board.prototype.character = function (name) {
 };
 
 Board.prototype.getWall = function (coordinates) {
-    if (coordinates.x >= 0 && coordinates.x < this._tiledMap.getMapSize().width
-        && coordinates.y >= 0 && coordinates.y < this._tiledMap.getMapSize().height) {
+    if (this.valid(coordinates)) {
         return this._tiledMap.getLayer("walls").getTileAt(coordinates);
     } else {
         return null;
     }
+}
+
+Board.prototype.getEnergizer = function (coordinates) {
+    if (this.valid(coordinates)) {
+        return this._tiledMap.getLayer("energizers").getTileAt(coordinates);
+    }
+    return null;
+}
+
+Board.prototype.valid = function (coordinates) {
+    if (coordinates === null) {
+        return false;
+    }
+    return coordinates.x >= 0 && coordinates.x < this._tiledMap.getMapSize().width
+        && coordinates.y >= 0 && coordinates.y < this._tiledMap.getMapSize().height;
 }
