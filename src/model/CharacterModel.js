@@ -8,6 +8,7 @@ var directions = {
 
 function CharacterModel(spawnPoint, name) {
     this._spawnPoint = spawnPoint;
+    this._location = cc.p(0, 0);
     this._name = name;
     this.spawn();
 }
@@ -20,8 +21,13 @@ CharacterModel.prototype.getName = function () {
     return this._name;
 };
 
+CharacterModel.prototype.getSpawnPointInPixels = function () {
+    return this._spawnPoint;
+};
+
 CharacterModel.prototype.spawn = function () {
-    this._location = this._spawnPoint;
+    this._location.x = this._spawnPoint.x;
+    this._location.y = this._spawnPoint.y;
     this._currentDirection = directions.none;
     this._numberOfStepsPerTile = -1;
     this._stepId = {
@@ -158,10 +164,25 @@ CharacterModel.prototype.coordinatesOfAdjacentTile = function (originalCoordinat
 }
 
 CharacterModel.prototype.coordinatesOfOccupiedTile = function (board) {
-    var x = Math.floor(this._location.x / board.getTileSize().width);
+    return this.getCoordinates(board, this._location);
+}
+
+CharacterModel.prototype.getCoordinates = function (board, pointInPixels) {
+    var x = Math.floor(pointInPixels.x / board.getTileSize().width);
     var y = Math.floor(
-        (board.getSizeInPixels().height - this._location.y) / board.getTileSize().height) - 1;
+        (board.getSizeInPixels().height - pointInPixels.y) / board.getTileSize().height) - 1;
     return cc.p(x, y);
+}
+
+CharacterModel.prototype.isCollision = function (board, otherCharacter) {
+    if (otherCharacter !== null) {
+        return cc.rectIntersectsRect(this.getBoundingBox(board), otherCharacter.getBoundingBox(board));
+    }
+    return false;
+}
+
+CharacterModel.prototype.getBoundingBox = function (board) {
+    return cc.rect(this._location.x, this._location.y, board.getTileSize().width, board.getTileSize().height);
 }
 
 CharacterModel.prototype._moveRight = function (board) {
