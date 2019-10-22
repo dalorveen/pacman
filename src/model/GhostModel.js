@@ -58,14 +58,14 @@ GhostModel.prototype.update = function (dt, board, pacManModel) {
     switch (this._ghostMode) {
         case ghostModes.chase:
             if (this.isCollision(board, pacManModel)) {
-                // kill
+                pacManModel.die();
             } else {
                 this._chase(board, pacManModel);
             }
             break;
         case ghostModes.scatter:
             if (this.isCollision(board, pacManModel)) {
-                // kill
+                pacManModel.die();
             } else {
                 this._scatter(board, pacManModel);
             }

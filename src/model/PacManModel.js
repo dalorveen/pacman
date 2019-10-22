@@ -1,7 +1,7 @@
 function PacManModel(spawnPoint) {
     CharacterModel.call(this, spawnPoint, "pacman");
     this._directionChosenByUser = directions.none;
-
+    this._isAlive = true;
     this._event = new cc.EventCustom("pacManAteEnergizer");
 }
 
@@ -25,3 +25,17 @@ PacManModel.prototype.update = function (dt, board) {
 PacManModel.prototype.setDirectionChosenByUser = function (direction) {
     this._directionChosenByUser = direction;
 }
+
+PacManModel.prototype.isAlive = function () {
+    return this._isAlive;
+}
+
+PacManModel.prototype.die = function () {
+    this._isAlive = false;
+}
+
+PacManModel.prototype.respawn = function () {
+    CharacterModel.prototype.spawn.call(this);
+
+    this._isAlive = true;
+};

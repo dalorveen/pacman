@@ -8,11 +8,19 @@ function Model(tiledMap) {
 }
 
 Model.prototype.update = function (dt) {
-    this._pacMan.update(dt, this._board);
-    this._shadow.update(dt, this._board, this._pacMan);
-    this._speedy.update(dt, this._board, this._pacMan);
-    this._bashful.update(dt, this._board, this._pacMan);
-    this._pokey.update(dt, this._board, this._pacMan);
+    if (this._pacMan.isAlive()) {
+        this._pacMan.update(dt, this._board);
+        this._shadow.update(dt, this._board, this._pacMan);
+        this._speedy.update(dt, this._board, this._pacMan);
+        this._bashful.update(dt, this._board, this._pacMan);
+        this._pokey.update(dt, this._board, this._pacMan);
+    } else {
+        this._pacMan.respawn();
+        this._shadow.spawn();
+        this._speedy.spawn();
+        this._bashful.spawn();
+        this._pokey.spawn();
+    }
 };
 
 Model.prototype.getBoard = function() {
