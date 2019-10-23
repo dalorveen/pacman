@@ -14,6 +14,7 @@ function PacManModel(spawnPoint) {
         }
     };
     this._lives = -1;
+    this._fruitsEatenAmount = 0;
     this._event = new cc.EventCustom("pacManAteEnergizer");
 }
 
@@ -45,6 +46,7 @@ PacManModel.prototype.update = function (dt, board) {
         if (fruit !== null && fruit.isVisible()) {
             fruit.setVisible(false);
             this._score.add(100);
+            this._fruitsEatenAmount++;
         }
     }
 }
@@ -90,4 +92,12 @@ PacManModel.prototype.getLives = function () {
 
 PacManModel.prototype.setLives = function (lives) {
     this._lives = lives;
+}
+
+PacManModel.prototype.getFruitsEatenAmount = function () {
+    return this._fruitsEatenAmount;
+}
+
+PacManModel.prototype.resetFruitsEatenAmount = function () {
+    this._fruitsEatenAmount = 0;
 }

@@ -60,3 +60,7 @@ View.prototype.getLabelHighScoreCounter = function () {
 View.prototype.getLabelLives = function () {
     return this._text.getLabelLives();
 };
+
+View.prototype.getFruitsEatenAmount = function () {
+    return this._text.getFruitsEatenAmount();
+};

@@ -18,6 +18,10 @@ Model.prototype.update = function (dt) {
         this._speedy.update(dt, this._board, this._pacMan);
         this._bashful.update(dt, this._board, this._pacMan);
         this._pokey.update(dt, this._board, this._pacMan);
+
+        if (this._board.getRemainingDots() == 70 || this._board.getRemainingDots() == 170) {
+            this._board.showFruit();
+        }
     } else if (this._pacMan.getLives() <= 0) {
         this._initializeNewGame();
     } else {
@@ -52,6 +56,7 @@ Model.prototype.getPokey = function () {
 Model.prototype._initializeNewGame = function () {
     this._pacMan.setLives(3);
     this._pacMan.resetCurrentScore();
+    this._pacMan.resetFruitsEatenAmount();
     this._startLevel();
 };
 

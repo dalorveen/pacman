@@ -4,6 +4,7 @@ function Board(tiledMap) {
             this._tiledMap.getMapSize().width * this._tiledMap.getTileSize().width,
             this._tiledMap.getMapSize().height * this._tiledMap.getTileSize().height);
     this._numberOfDots = -1;
+    this._fruit = null;
     this.initialize();
 }
 
@@ -102,4 +103,12 @@ Board.prototype.decreaseDots = function () {
 
 Board.prototype.getRemainingDots = function () {
     return this._numberOfDots;
+}
+
+Board.prototype.showFruit = function () {
+    this._fruit.setVisible(true);
+}
+
+Board.prototype.hideFruit = function () {
+    this._fruit.setVisible(false);
 }
