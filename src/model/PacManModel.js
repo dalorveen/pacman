@@ -3,7 +3,16 @@ function PacManModel(spawnPoint) {
     this._directionChosenByUser = directions.none;
     this._isAlive = true;
     this._ghostCounter = 0;
-    this._score = 0;
+    this._score = {
+        current: 0,
+        high: 0,
+        add: function (award) {
+            this.current += award;
+            if (this.current > this.high) {
+                this.high = this.current;
+            }
+        }
+    };
     this._event = new cc.EventCustom("pacManAteEnergizer");
 }
 
@@ -21,19 +30,19 @@ PacManModel.prototype.update = function (dt, board) {
             // this._event.setUserData("isEnergizerEaten");
             cc.eventManager.dispatchEvent(this._event);
             this._ghostCounter = 0;
-            this._score += 50;
+            this._score.add(50);
         }
 
         var dot = board.getDot(this.coordinatesOfOccupiedTile(board));
         if (dot !== null && dot.isVisible()) {
             dot.setVisible(false);
-            this._score += 10;
+            this._score.add(10);
         }
 
         var fruit = board.getFruit(this.coordinatesOfOccupiedTile(board));
         if (fruit !== null && fruit.isVisible()) {
             fruit.setVisible(false);
-            this._score += 100;
+            this._score.add(100);
         }
     }
 }
@@ -57,9 +66,13 @@ PacManModel.prototype.respawn = function () {
 };
 
 PacManModel.prototype.chaseAwayGhost = function () {
-    this._score += Math.pow(2, ++this._ghostCounter) * 100;
+    this._score.add(Math.pow(2, ++this._ghostCounter) * 100);
 }
 
-PacManModel.prototype.getScore = function () {
-    return this._score;
+PacManModel.prototype.getCurrentScore = function () {
+    return this._score.current;
+}
+
+PacManModel.prototype.getHighScore = function () {
+    return this._score.high;
 }

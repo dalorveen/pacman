@@ -48,3 +48,11 @@ View.prototype.getLabelScore = function () {
 View.prototype.getLabelScoreCounter = function () {
     return this._text.getLabelScoreCounter();
 };
+
+View.prototype.getLabelHighScore = function () {
+    return this._text.getLabelHighScore();
+};
+
+View.prototype.getLabelHighScoreCounter = function () {
+    return this._text.getLabelHighScoreCounter();
+};
