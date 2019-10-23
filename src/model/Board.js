@@ -3,6 +3,8 @@ function Board(tiledMap) {
     this._sizeInPixels = cc.size(
             this._tiledMap.getMapSize().width * this._tiledMap.getTileSize().width,
             this._tiledMap.getMapSize().height * this._tiledMap.getTileSize().height);
+    this._numberOfDots = -1;
+    this.initialize();
 }
 
 Board.prototype.getTiledMap = function () {
@@ -66,4 +68,38 @@ Board.prototype.valid = function (coordinates) {
     }
     return coordinates.x >= 0 && coordinates.x < this._tiledMap.getMapSize().width
         && coordinates.y >= 0 && coordinates.y < this._tiledMap.getMapSize().height;
+}
+
+Board.prototype.initialize = function () {
+    this._numberOfDots = 0;
+    for (var x = 0; x < this._tiledMap.getMapSize().width; x++) {
+        for (var y = 0; y < this._tiledMap.getMapSize().height; y++) {
+            var p = cc.p(x, y);
+
+            var energizer = this.getEnergizer(p);
+            if (energizer !== null) {
+                energizer.setVisible(true);
+            }
+
+            var dot = this.getDot(p);
+            if (dot !== null) {
+                dot.setVisible(true);
+                this._numberOfDots++;
+            }
+
+            let fruit = this.getFruit(p);
+            if (fruit !== null) {
+                this._fruit = fruit;
+                this._fruit.setVisible(false);
+            }   
+        }
+    }
+}
+
+Board.prototype.decreaseDots = function () {
+    this._numberOfDots--;
+}
+
+Board.prototype.getRemainingDots = function () {
+    return this._numberOfDots;
 }

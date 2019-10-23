@@ -13,7 +13,7 @@ function PacManModel(spawnPoint) {
             }
         }
     };
-    this._lives = 3;
+    this._lives = -1;
     this._event = new cc.EventCustom("pacManAteEnergizer");
 }
 
@@ -38,6 +38,7 @@ PacManModel.prototype.update = function (dt, board) {
         if (dot !== null && dot.isVisible()) {
             dot.setVisible(false);
             this._score.add(10);
+            board.decreaseDots();
         }
 
         var fruit = board.getFruit(this.coordinatesOfOccupiedTile(board));
@@ -75,10 +76,18 @@ PacManModel.prototype.getCurrentScore = function () {
     return this._score.current;
 }
 
+PacManModel.prototype.resetCurrentScore = function () {
+    this._score.current = 0;
+}
+
 PacManModel.prototype.getHighScore = function () {
     return this._score.high;
 }
 
 PacManModel.prototype.getLives = function () {
     return this._lives;
+}
+
+PacManModel.prototype.setLives = function (lives) {
+    this._lives = lives;
 }

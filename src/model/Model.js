@@ -5,21 +5,23 @@ function Model(tiledMap) {
     this._speedy = new GhostModel(this._board.getSpawnPoint("pinky"), "pinky");
     this._bashful = new GhostModel(this._board.getSpawnPoint("inky"), "inky");
     this._pokey = new GhostModel(this._board.getSpawnPoint("clyde"), "clyde");
+
+    this._initializeNewGame();
 }
 
 Model.prototype.update = function (dt) {
-    if (this._pacMan.isAlive()) {
+    if (this._board.getRemainingDots() <= 0) {
+        this._completeLevel();
+    } else if (this._pacMan.isAlive()) {
         this._pacMan.update(dt, this._board);
         this._shadow.update(dt, this._board, this._pacMan);
         this._speedy.update(dt, this._board, this._pacMan);
         this._bashful.update(dt, this._board, this._pacMan);
         this._pokey.update(dt, this._board, this._pacMan);
+    } else if (this._pacMan.getLives() <= 0) {
+        this._initializeNewGame();
     } else {
-        this._pacMan.respawn();
-        this._shadow.spawn();
-        this._speedy.spawn();
-        this._bashful.spawn();
-        this._pokey.spawn();
+        this._restartLevel();
     }
 };
 
@@ -46,3 +48,29 @@ Model.prototype.getBashful = function () {
 Model.prototype.getPokey = function () {
     return this._pokey;
 };
+
+Model.prototype._initializeNewGame = function () {
+    this._pacMan.setLives(3);
+    this._pacMan.resetCurrentScore();
+    this._startLevel();
+};
+
+Model.prototype._startLevel = function () {
+    this._board.initialize();
+    this._respawnAllCharacters();
+}
+
+Model.prototype._restartLevel = function () {
+    this._respawnAllCharacters();
+}
+
+Model.prototype._completeLevel = function () {
+}
+
+Model.prototype._respawnAllCharacters = function () {
+    this._pacMan.respawn();
+    this._shadow.spawn();
+    this._speedy.spawn();
+    this._bashful.spawn();
+    this._pokey.spawn();
+}
