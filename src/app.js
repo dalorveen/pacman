@@ -44,6 +44,7 @@ var BoardLayer = cc.Layer.extend({
         this.addChild(this.view.getLabelScoreCounter(), 2);
         this.addChild(this.view.getLabelHighScore(), 2);
         this.addChild(this.view.getLabelHighScoreCounter(), 2);
+        this.addChild(this.view.getLabelLives(), 2);
         
         this.controller = new Controller(this.model);
 

@@ -56,3 +56,7 @@ View.prototype.getLabelHighScore = function () {
 View.prototype.getLabelHighScoreCounter = function () {
     return this._text.getLabelHighScoreCounter();
 };
+
+View.prototype.getLabelLives = function () {
+    return this._text.getLabelLives();
+};

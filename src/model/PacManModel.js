@@ -13,6 +13,7 @@ function PacManModel(spawnPoint) {
             }
         }
     };
+    this._lives = 3;
     this._event = new cc.EventCustom("pacManAteEnergizer");
 }
 
@@ -57,6 +58,7 @@ PacManModel.prototype.isAlive = function () {
 
 PacManModel.prototype.die = function () {
     this._isAlive = false;
+    this._lives--;
 }
 
 PacManModel.prototype.respawn = function () {
@@ -75,4 +77,8 @@ PacManModel.prototype.getCurrentScore = function () {
 
 PacManModel.prototype.getHighScore = function () {
     return this._score.high;
+}
+
+PacManModel.prototype.getLives = function () {
+    return this._lives;
 }
