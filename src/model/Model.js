@@ -6,6 +6,7 @@ function Model(tiledMap) {
     this._bashful = new GhostModel(this._board.getSpawnPoint("inky"), "inky");
     this._pokey = new GhostModel(this._board.getSpawnPoint("clyde"), "clyde");
 
+    this._eventRespawnAllCharacters = new cc.EventCustom("respawnAllCharacters");
     this._initializeNewGame();
 }
 
@@ -78,4 +79,5 @@ Model.prototype._respawnAllCharacters = function () {
     this._speedy.spawn();
     this._bashful.spawn();
     this._pokey.spawn();
+    cc.eventManager.dispatchEvent(this._eventRespawnAllCharacters);
 }

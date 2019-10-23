@@ -15,7 +15,7 @@ function PacManModel(spawnPoint) {
     };
     this._lives = -1;
     this._fruitsEatenAmount = 0;
-    this._event = new cc.EventCustom("pacManAteEnergizer");
+    this._eventEnergizerEaten = new cc.EventCustom("pacManAteEnergizer");
 }
 
 PacManModel.prototype = Object.create(CharacterModel.prototype);
@@ -29,8 +29,8 @@ PacManModel.prototype.update = function (dt, board) {
         var energizer = board.getEnergizer(this.coordinatesOfOccupiedTile(board));
         if (energizer !== null && energizer.isVisible()) {
             energizer.setVisible(false);
-            // this._event.setUserData("isEnergizerEaten");
-            cc.eventManager.dispatchEvent(this._event);
+            // this._eventEnergizerEaten.setUserData("isEnergizerEaten");
+            cc.eventManager.dispatchEvent(this._eventEnergizerEaten);
             this._ghostCounter = 0;
             this._score.add(50);
         }

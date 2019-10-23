@@ -36,6 +36,10 @@ CharacterModel.prototype.spawn = function () {
     };
 };
 
+CharacterModel.prototype.getCurrentDirection = function () {
+    return this._currentDirection;
+}
+
 CharacterModel.prototype.move = function (board, desiredDirection, speed) {
     if (this._numberOfStepsPerTile < 0) {
         this._numberOfStepsPerTile = Math.round(1.0 / speed);

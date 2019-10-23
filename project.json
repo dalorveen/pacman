@@ -26,6 +26,7 @@
     "src/view/PacManView.js",
     "src/view/GhostView.js",
     "src/view/TextView.js",
+    "src/view/Animation.js",
     "src/controller/Controller.js"
   ]
 }
