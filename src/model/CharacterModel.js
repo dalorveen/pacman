@@ -6,10 +6,12 @@ var directions = {
     down: 4
 };
 
-function CharacterModel(spawnPoint, name) {
+function CharacterModel(spawnPoint, name, stepLength) {
     this._spawnPoint = spawnPoint;
     this._location = cc.p(0, 0);
     this._name = name;
+    this._defaultStepLength = stepLength;
+    this._stepLength = stepLength;
     this.spawn();
 }
 
@@ -29,10 +31,10 @@ CharacterModel.prototype.spawn = function () {
     this._location.x = this._spawnPoint.x;
     this._location.y = this._spawnPoint.y;
     this._currentDirection = directions.none;
-    this._numberOfStepsPerTile = -1;
-    this._stepId = {
-        x: 0,
-        y: 0
+
+    this._transition = {
+        originPoint: cc.p(this._location.x, this._location.y),
+        isShifted: true
     };
 };
 
@@ -40,88 +42,70 @@ CharacterModel.prototype.getCurrentDirection = function () {
     return this._currentDirection;
 }
 
-CharacterModel.prototype.move = function (board, desiredDirection, speed) {
-    if (this._numberOfStepsPerTile < 0) {
-        this._numberOfStepsPerTile = Math.round(1.0 / speed);
-        this._stepLength = {
-            x: board.getTileSize().width / this._numberOfStepsPerTile,
-            y: board.getTileSize().height / this._numberOfStepsPerTile,
-        };
-    }
-    
-    if (desiredDirection != directions.none && desiredDirection != this._currentDirection) {
-        if (desiredDirection == directions.right && this.canMoveTo(board, directions.right)) {
-            this._currentDirection = directions.right;
-            this._moveRight(board);
-            return;
-        } else if (desiredDirection == directions.left && this.canMoveTo(board, directions.left)) {
-            this._currentDirection = directions.left;
-            this._moveLeft(board);
-            return;
-        } else if (desiredDirection == directions.up && this.canMoveTo(board, directions.up)) {
-            this._currentDirection = directions.up;
-            this._moveUp(board);
-            return;
-        } else if (desiredDirection == directions.down && this.canMoveTo(board, directions.down)) {
-            this._currentDirection = directions.down;
-            this._moveDown(board);
-            return;
+CharacterModel.prototype.changeStepLength = function (factor) {
+    this._stepLength = this._defaultStepLength * factor;
+}
+
+CharacterModel.prototype.resetStepLength = function () {
+    this._stepLength = this._defaultStepLength;
+}
+
+CharacterModel.prototype.move = function (dt, board, desiredDirection) {
+    var speed = this._stepLength * dt;
+    if (desiredDirection !== directions.none && desiredDirection !== this._currentDirection) {
+        if (this.canMoveTo(board, desiredDirection, speed)) {
+            this._currentDirection = desiredDirection;
         }
     }
-
+    
     switch (this._currentDirection) {
         case directions.none:
-            break
+            break;
         case directions.right:
-            if (this.canMoveTo(board, directions.right)) {
-                this._moveRight(board);
+            if (this.canMoveTo(board, directions.right, speed)) {
+                this._moveRight(board, speed);
             } else {
-                this._stop();
+                this._stop(board);
             }
             break;
         case directions.left:
-            if (this.canMoveTo(board, directions.left)) {
-                this._moveLeft(board);
+            if (this.canMoveTo(board, directions.left, speed)) {
+                this._moveLeft(board, speed);
             } else {
-                this._stop();
+                this._stop(board);
             }
             break;
         case directions.up:
-            if (this.canMoveTo(board, directions.up)) {
-                this._moveUp(board);
+            if (this.canMoveTo(board, directions.up, speed)) {
+                this._moveUp(board, speed);
             } else {
-                this._stop();
+                this._stop(board);
             }
             break;
         case directions.down:
-            if (this.canMoveTo(board, directions.down)) {
-                this._moveDown(board);
+            if (this.canMoveTo(board, directions.down, speed)) {
+                this._moveDown(board, speed);
             } else {
-                this._stop();
+                this._stop(board);
             }
             break;
     }
 };
 
-CharacterModel.prototype.canMoveTo = function (board, direction) {
-    if (this.isTunnel(board)) {
-        if (this._currentDirection === directions.right || this._currentDirection === directions.left) {
-            return direction === directions.right || direction === directions.left;
-        } else if (this._currentDirection === directions.up || this._currentDirection === directions.down) {
-            return direction === directions.up || direction === directions.down;
-        } else {
-            return false;
-        }
+CharacterModel.prototype.canMoveTo = function (board, direction, speed) {
+    if (this._transition.isShifted) {
+        var coordinates = this.getCoordinates(board, this._transition.originPoint);
+        var coordinatesOfAdjacentTile = this.coordinatesOfAdjacentTile(coordinates, direction);
+        var wall = board.getWall(coordinatesOfAdjacentTile);
+        return wall === null;
+    } else if ((direction === directions.right || direction === directions.left)
+        && (this._currentDirection === directions.right || this._currentDirection === directions.left)) {
+        return true;
+    } else if ((direction === directions.up || direction === directions.down)
+        && (this._currentDirection === directions.up || this._currentDirection === directions.down)) {
+        return true;
     } else {
-        if (this.isSnapToTile()) {
-            var coordinatesOfAdjacentTile = this.coordinatesOfAdjacentTile(this.coordinatesOfOccupiedTile(board), direction);
-            var wall = board.getWall(coordinatesOfAdjacentTile);
-            return wall === null;
-        } else if (direction === directions.right || direction === directions.left) {
-            return this.isSnapToTileByY();
-        } else if (direction === directions.up || direction === directions.down) {
-            return this.isSnapToTileByX();
-        }
+        return false;
     }
 }
 
@@ -134,15 +118,7 @@ CharacterModel.prototype.isTunnel = function (board) {
 }
 
 CharacterModel.prototype.isSnapToTile = function () {
-    return this.isSnapToTileByX() && this.isSnapToTileByY();
-}
-
-CharacterModel.prototype.isSnapToTileByX = function () {
-    return this._stepId.x % this._numberOfStepsPerTile === 0;
-}
-
-CharacterModel.prototype.isSnapToTileByY = function () {
-    return this._stepId.y % this._numberOfStepsPerTile === 0;
+    return this._transition.isShifted;
 }
 
 CharacterModel.prototype.coordinatesOfAdjacentTile = function (originalCoordinates, direction) {
@@ -168,7 +144,7 @@ CharacterModel.prototype.coordinatesOfAdjacentTile = function (originalCoordinat
 }
 
 CharacterModel.prototype.coordinatesOfOccupiedTile = function (board) {
-    return this.getCoordinates(board, this._location);
+    return this.getCoordinates(board, this._transition.originPoint);
 }
 
 CharacterModel.prototype.getCoordinates = function (board, pointInPixels) {
@@ -189,70 +165,85 @@ CharacterModel.prototype.getBoundingBox = function (board) {
     return cc.rect(this._location.x, this._location.y, board.getTileSize().width, board.getTileSize().height);
 }
 
-CharacterModel.prototype._moveRight = function (board) {
-    this._location.x += this._stepLength.x;
+CharacterModel.prototype._moveRight = function (board, speed) {
+    this._location.x += speed;
     if (this._location.x > board.getSizeInPixels().width) {
         this._location.x = -board.getTileSize().width;
-        this._stepId.x = 0;
-        this._location.x += this._stepLength.x;
+        this._transition.originPoint.x = -board.getTileSize().width;
+        this._moveRight(board, speed);
+        return;
     }
-    this._stepId.x++;
-    
-    if (this.isSnapToTileByX()) {
-        this._location.x = Math.round(this._location.x);
+
+    var endPoint = this._transition.originPoint.x + board.getTileSize().width;
+    if (this._location.x >= endPoint) {
+        this._transition.originPoint.x = endPoint;
+        this._transition.isShifted = true;
+    } else {
+        this._transition.isShifted = false;
     }
+    this._location.y = this._transition.originPoint.y;
 }
 
-CharacterModel.prototype._moveLeft = function (board) {
-    this._location.x -= this._stepLength.x;
+CharacterModel.prototype._moveLeft = function (board, speed) {
+    this._location.x -= speed;
     if (this._location.x < -board.getTileSize().width) {
         this._location.x = board.getSizeInPixels().width;
-        this._stepId.x = 0;
-        this._location.x -= this._stepLength.x;
+        this._transition.originPoint.x = board.getSizeInPixels().width;
+        this._moveLeft(board, speed);
+        return;
     }
-    this._stepId.x--;
-
-    if (this.isSnapToTileByX()) {
-        this._location.x = Math.round(this._location.x);
+    
+    var endPoint = this._transition.originPoint.x - board.getTileSize().width;
+    if (this._location.x <= endPoint) {
+        this._transition.originPoint.x = endPoint;
+        this._transition.isShifted = true;
+    } else {
+        this._transition.isShifted = false;
     }
+    this._location.y = this._transition.originPoint.y;
 }
 
-CharacterModel.prototype._moveUp = function (board) {
-    this._location.y += this._stepLength.y;
+CharacterModel.prototype._moveUp = function (board, speed) {
+    this._location.y += speed;
     if (this._location.y > board.getSizeInPixels().height) {
         this._location.y = -board.getTileSize().height;
-        this._stepId.y = 0;
-        this._location.y += this._stepLength.y;
+        this._transition.originPoint.y = -board.getTileSize().height;
+        this._moveUp(board, speed);
+        return;
     }
-    this._stepId.y++;
 
-    if (this.isSnapToTileByY()) {
-        this._location.y = Math.round(this._location.y);
+    var endPoint = this._transition.originPoint.y + board.getTileSize().height;
+    if (this._location.y >= endPoint) {
+        this._transition.originPoint.y = endPoint;
+        this._transition.isShifted = true;
+    } else {
+        this._transition.isShifted = false;
     }
+    this._location.x = this._transition.originPoint.x;
 }
 
-CharacterModel.prototype._moveDown = function (board) {
-    this._location.y -= this._stepLength.y;
+CharacterModel.prototype._moveDown = function (board, speed) {
+    this._location.y -= speed;
     if (this._location.y < -board.getTileSize().height) {
         this._location.y = board.getSizeInPixels().height;
-        this._stepId.y = 0;
-        this._location.y -= this._stepLength.y;
+        this._transition.originPoint.y = board.getSizeInPixels().height;
+        this._moveDown(board, speed);
+        return;
     }
-    this._stepId.y--;
-    
-    if (this.isSnapToTileByY()) {
-        this._location.y = Math.round(this._location.y);
+
+    var endPoint = this._transition.originPoint.y - board.getTileSize().height;
+    if (this._location.y <= endPoint) {
+        this._transition.originPoint.y = endPoint;
+        this._transition.isShifted = true;
+    } else {
+        this._transition.isShifted = false;
     }
+    this._location.x = this._transition.originPoint.x;
 }
 
-CharacterModel.prototype._stop = function () {
+CharacterModel.prototype._stop = function (board) {
     this._currentDirection = directions.none;
-
-    if (this.isSnapToTileByX()) {
-        this._location.x = Math.round(this._location.x);
-    }
-
-    if (this.isSnapToTileByY()) {
-        this._location.y = Math.round(this._location.y);
-    }
+    this._location.x = this._transition.originPoint.x;
+    this._location.y = this._transition.originPoint.y;
+    this._transition.isShifted = true;
 }

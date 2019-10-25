@@ -7,7 +7,7 @@ var ghostModes = {
 };
 
 function GhostModel(spawnPoint, name) {
-    CharacterModel.call(this, spawnPoint, name);
+    CharacterModel.call(this, spawnPoint, name, this._initializeStepLength(name));
     this._navigator = new Navigator(this);
 
     this._chaseDurationInSeconds = 20;
@@ -60,14 +60,14 @@ GhostModel.prototype.update = function (dt, board, pacManModel) {
             if (this.isCollision(board, pacManModel)) {
                 pacManModel.die();
             } else {
-                this._chase(board, pacManModel);
+                this._chase(dt, board, pacManModel);
             }
             break;
         case ghostModes.scatter:
             if (this.isCollision(board, pacManModel)) {
                 pacManModel.die();
             } else {
-                this._scatter(board, pacManModel);
+                this._scatter(dt, board, pacManModel);
             }
             break;
         case ghostModes.blueFrightened:
@@ -75,13 +75,13 @@ GhostModel.prototype.update = function (dt, board, pacManModel) {
             if (this.isCollision(board, pacManModel)) {
                 pacManModel.chaseAwayGhost();
                 this._ghostMode = ghostModes.consumed;
-                this._consume(board);
+                this._consume(dt, board);
             } else {
-                this._frighten(board, pacManModel);
+                this._frighten(dt, board, pacManModel);
             }
             break;
         case ghostModes.consumed:
-            this._consume(board);
+            this._consume(dt, board);
             break;
     }
 }
@@ -93,6 +93,20 @@ GhostModel.prototype.onFrighten = function (event) {
 
 GhostModel.prototype.getGhostMode = function () {
     return this._ghostMode;
+}
+
+GhostModel.prototype._initializeStepLength = function (ghostName) {
+    if (ghostName === "blinky") {
+        return 95;
+    } else if (ghostName === "pinky") {
+        return 100;
+    } else if (ghostName === "inky") {
+        return 90;
+    } else if (ghostName === "clyde") {
+        return 85;
+    } else {
+        return 95;
+    }
 }
 
 GhostModel.prototype._getRandomizedInitialGhostMode = function () {
@@ -111,28 +125,50 @@ GhostModel.prototype._getRandomizedInitialDurationGhostMode = function (currentG
     }
 }
 
-GhostModel.prototype._chase = function (board, pacManModel) {
+GhostModel.prototype._chase = function (dt, board, pacManModel) {
     var direction = this._navigator.directionTo(board, pacManModel.coordinatesOfOccupiedTile(board));
-    this.move(board, direction, 0.12);
+    this._changeSpeed(ghostModes.chase);
+    this.move(dt, board, direction);
 }
 
-GhostModel.prototype._scatter = function (board, pacManModel) {
+GhostModel.prototype._scatter = function (dt, board, pacManModel) {
     var direction = this._navigator.directionFrom(board, pacManModel.coordinatesOfOccupiedTile(board));
-    this.move(board, direction, 0.12);
+    this._changeSpeed(ghostModes.scatter);
+    this.move(dt, board, direction);
 }
 
-GhostModel.prototype._frighten = function (board, pacManModel) {
+GhostModel.prototype._frighten = function (dt, board, pacManModel) {
     var direction = this._navigator.directionFrom(board, pacManModel.coordinatesOfOccupiedTile(board));
-    this.move(board, direction, 0.12);
+    this._changeSpeed(ghostModes.blueFrightened);
+    this.move(dt, board, direction);
 }
 
-GhostModel.prototype._consume = function (board) {
+GhostModel.prototype._consume = function (dt, board) {
     var spawnPointInPixels = this.getSpawnPointInPixels();
     var direction = this._navigator.directionTo(board, this.getCoordinates(board, spawnPointInPixels));
-    this.move(board, direction, 0.12);
+    this._changeSpeed(ghostModes.consumed);
+    this.move(dt, board, direction);
 
     if (spawnPointInPixels.x === this.getLocation().x && spawnPointInPixels.y === this.getLocation().y) {
         this._ghostMode = this._getRandomizedInitialGhostMode();
         this._timerInSeconds = this._getRandomizedInitialDurationGhostMode(this._ghostMode);
+    }
+}
+
+GhostModel.prototype._changeSpeed = function (ghostMode) {
+    switch (ghostMode) {
+        case ghostModes.chase:
+            this.changeStepLength(1.1);
+            break;
+        case ghostModes.scatter:
+            this.resetStepLength();
+            break;
+        case ghostModes.blueFrightened:
+        case ghostModes.whiteFrightened:
+            this.changeStepLength(0.7);
+            break;
+        case ghostModes.consumed:
+            this.changeStepLength(2.2);
+            break;
     }
 }

@@ -1,5 +1,5 @@
 function PacManModel(spawnPoint) {
-    CharacterModel.call(this, spawnPoint, "pacman");
+    CharacterModel.call(this, spawnPoint, "pacman", 105);
     this._directionChosenByUser = directions.none;
     this._isAlive = true;
     this._ghostCounter = 0;
@@ -23,7 +23,7 @@ PacManModel.prototype = Object.create(CharacterModel.prototype);
 PacManModel.prototype.constructor = PacManModel;
 
 PacManModel.prototype.update = function (dt, board) {
-    this.move(board, this._directionChosenByUser, 0.15);
+    this.move(dt, board, this._directionChosenByUser);
 
     if (this.isSnapToTile()) {
         var energizer = board.getEnergizer(this.coordinatesOfOccupiedTile(board));
