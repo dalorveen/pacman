@@ -1,17 +1,11 @@
 function CharacterView(characterModel, defaultRect) {
     this._characterModel = characterModel;
     this._defaultRect = defaultRect;
+    gameEvent.respawnAllCharacters(this.setDefaultSprite, this);
     this._sprite = cc.Sprite.create(res.spr_all5_4A2_png, defaultRect);
     this._sprite.anchorX = 0;
     this._sprite.anchorY = 0;
     this.draw();
-
-    this._listener = cc.EventListener.create({
-        event: cc.EventListener.CUSTOM,
-        eventName: "respawnAllCharacters",
-        callback: this.setDefaultSprite.bind(this)
-    });
-    cc.eventManager.addListener(this._listener, 2);
 }
 
 CharacterView.prototype.getSprite = function () {
@@ -26,6 +20,6 @@ CharacterView.prototype.getCharacterModel = function () {
     return this._characterModel;
 };
 
-CharacterView.prototype.setDefaultSprite = function () {
+CharacterView.prototype.setDefaultSprite = function (eventArgs) {
     this._sprite.setTextureRect(this._defaultRect);
 };

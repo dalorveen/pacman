@@ -14,6 +14,7 @@
   "jsList": [
     "src/resource.js",
     "src/app.js",
+    "src/gameEvent.js",
     "src/model/Model.js",
     "src/model/CharacterModel.js",
     "src/model/PacManModel.js",
@@ -27,6 +28,7 @@
     "src/view/GhostView.js",
     "src/view/TextView.js",
     "src/view/Animation.js",
-    "src/controller/Controller.js"
+    "src/controller/Controller.js",
+    "src/sound/Sound.js"
   ]
 }

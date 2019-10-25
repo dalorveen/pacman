@@ -49,6 +49,8 @@ var BoardLayer = cc.Layer.extend({
         
         this.controller = new Controller(this.model);
 
+        this.sound = new Sound();
+
         cc.eventManager.addListener({
             event: cc.EventListener.KEYBOARD,
             onKeyPressed: function (keyCode, event) {

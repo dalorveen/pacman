@@ -24,7 +24,11 @@
 
 var res = {
     spr_all5_4A2_png: "res/spr_all5_4A2.png",
-    board_tmx: "res/board.tmx"
+    board_tmx: "res/board.tmx",
+    game_start_wav: "res/sound/game_start.wav",
+    munch_1_wav: "res/sound/munch_1.wav",
+    munch_2_wav: "res/sound/munch_2.wav",
+    power_pellet_wav: "res/sound/power_pellet.wav"
 };
 
 var g_resources = [];

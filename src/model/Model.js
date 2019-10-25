@@ -7,7 +7,6 @@ function Model(tiledMap) {
     this._pokey = new GhostModel(this._board.getSpawnPoint("clyde"), "clyde");
 
     this._timerInSeconds = 0;
-    this._eventRespawnAllCharacters = new cc.EventCustom("respawnAllCharacters");
     this._initializeNewGame();
 }
 
@@ -86,7 +85,7 @@ Model.prototype._respawnAllCharacters = function () {
     this._speedy.spawn();
     this._bashful.spawn();
     this._pokey.spawn();
-    cc.eventManager.dispatchEvent(this._eventRespawnAllCharacters);
+    gameEvent.onRespawnAllCharacters("respawn");
 }
 
 Model.prototype._isDelay = function (dt) {

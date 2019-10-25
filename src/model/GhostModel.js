@@ -8,6 +8,7 @@ var ghostModes = {
 
 function GhostModel(spawnPoint, name) {
     CharacterModel.call(this, spawnPoint, name, this._initializeStepLength(name));
+    gameEvent.pacManAteEnergizer(this.onFrighten, this);
     this._navigator = new Navigator(this);
 
     this._chaseDurationInSeconds = 20;
@@ -17,13 +18,6 @@ function GhostModel(spawnPoint, name) {
 
     this._ghostMode = this._getRandomizedInitialGhostMode();
     this._timerInSeconds = this._getRandomizedInitialDurationGhostMode(this._ghostMode);
-
-    this._listener = cc.EventListener.create({
-        event: cc.EventListener.CUSTOM,
-        eventName: "pacManAteEnergizer",
-        callback: this.onFrighten.bind(this)
-    });
-    cc.eventManager.addListener(this._listener, 2);
 }
 
 GhostModel.prototype = Object.create(CharacterModel.prototype);
@@ -86,8 +80,7 @@ GhostModel.prototype.update = function (dt, board, pacManModel) {
     }
 }
 
-GhostModel.prototype.onFrighten = function (event) {
-    // cc.log(event.getUserData());
+GhostModel.prototype.onFrighten = function (eventArgs) {
     this._ghostMode = ghostModes.blueFrightened;
 }
 
