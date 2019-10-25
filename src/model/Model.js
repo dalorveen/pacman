@@ -6,11 +6,16 @@ function Model(tiledMap) {
     this._bashful = new GhostModel(this._board.getSpawnPoint("inky"), "inky");
     this._pokey = new GhostModel(this._board.getSpawnPoint("clyde"), "clyde");
 
+    this._timerInSeconds = 0;
     this._eventRespawnAllCharacters = new cc.EventCustom("respawnAllCharacters");
     this._initializeNewGame();
 }
 
 Model.prototype.update = function (dt) {
+    if (this._isDelay(dt)) {
+        return;
+    }
+
     if (this._board.getRemainingDots() <= 0) {
         this._completeLevel();
     } else if (this._pacMan.isAlive()) {
@@ -62,11 +67,13 @@ Model.prototype._initializeNewGame = function () {
 };
 
 Model.prototype._startLevel = function () {
+    this._timerInSeconds = 2;
     this._board.initialize();
     this._respawnAllCharacters();
 }
 
 Model.prototype._restartLevel = function () {
+    this._timerInSeconds = 1;
     this._respawnAllCharacters();
 }
 
@@ -80,4 +87,9 @@ Model.prototype._respawnAllCharacters = function () {
     this._bashful.spawn();
     this._pokey.spawn();
     cc.eventManager.dispatchEvent(this._eventRespawnAllCharacters);
+}
+
+Model.prototype._isDelay = function (dt) {
+    this._timerInSeconds -= dt;
+    return this._timerInSeconds > 0;
 }
