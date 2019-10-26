@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="28" height="34" tilewidth="20" tileheight="20" nextobjectid="24">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="28" height="34" tilewidth="20" tileheight="20" nextobjectid="25">
  <tileset firstgid="1" name="spr_all5_4A2" tilewidth="20" tileheight="20" spacing="1" margin="1" tilecount="238" columns="17">
   <image source="spr_all5_4A2.png" width="358" height="295"/>
   <tile id="129">
@@ -45,6 +45,7 @@
   <object id="20" name="highScoreCounter" x="280" y="20" width="20" height="20"/>
   <object id="22" name="lives" x="440" y="12" width="20" height="20"/>
   <object id="23" name="fruits" x="520" y="12" width="20" height="20"/>
+  <object id="24" name="notice" x="280" y="275" width="20" height="20"/>
  </objectgroup>
  <objectgroup name="characters">
   <object id="1" name="pacman" x="280" y="520" width="20" height="20"/>

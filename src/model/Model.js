@@ -8,12 +8,15 @@ function Model(tiledMap) {
 
     this._timerInSeconds = 0;
     this._initializeNewGame();
+    this._isWaiting = false;
 }
 
 Model.prototype.update = function (dt) {
     if (this._isDelay(dt)) {
+        this._isWaiting = true;
         return;
     }
+    this._isWaiting = false;
 
     if (this._board.getRemainingDots() <= 0) {
         this._completeLevel();
@@ -32,6 +35,10 @@ Model.prototype.update = function (dt) {
     } else {
         this._restartLevel();
     }
+};
+
+Model.prototype.isWaiting = function () {
+    return this._isWaiting;
 };
 
 Model.prototype.getBoard = function() {

@@ -64,3 +64,7 @@ View.prototype.getLabelLives = function () {
 View.prototype.getFruitsEatenAmount = function () {
     return this._text.getFruitsEatenAmount();
 };
+
+View.prototype.getLabelNotice = function () {
+    return this._text.getLabelNotice();
+};

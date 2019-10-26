@@ -13,6 +13,8 @@ function TextView(model) {
 
     var fruits = text.getObject("fruits");
 
+    var notice = text.getObject("notice");
+
     this._labelScore = cc.LabelTTF.create("1UP", "Arial", 20);
     this._labelScore.setPosition(score.x, score.y);
     this._labelScore.setFontFillColor(cc.color(255, 0, 0, 255));
@@ -36,6 +38,10 @@ function TextView(model) {
     this._labelFruits = cc.LabelTTF.create("x 0", "Arial", 18);
     this._labelFruits.setPosition(fruits.x, fruits.y);
     this._labelFruits.setFontFillColor(cc.color(0, 255, 0, 255));
+
+    this._labelNotice = cc.LabelTTF.create("READY!", "Arial", 26);
+    this._labelNotice.setPosition(notice.x, notice.y);
+    this._labelNotice.setFontFillColor(cc.color(255, 255, 0, 255));
 }
 
 TextView.prototype.getLabelScore = function () {
@@ -62,9 +68,14 @@ TextView.prototype.getFruitsEatenAmount = function () {
     return this._labelFruits;
 };
 
+TextView.prototype.getLabelNotice = function () {
+    return this._labelNotice;
+};
+
 TextView.prototype.draw = function () {
     this._labelScoreCounter.setString(this._model.getPacMan().getCurrentScore());
     this._labelHighScoreCounter.setString(this._model.getPacMan().getHighScore());
     this._labelLives.setString("x " + this._model.getPacMan().getLives());
     this._labelFruits.setString("x " + this._model.getPacMan().getFruitsEatenAmount());
+    this._labelNotice.setVisible(this._model.isWaiting());
 };
