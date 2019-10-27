@@ -23,3 +23,7 @@ CharacterView.prototype.getCharacterModel = function () {
 CharacterView.prototype.setDefaultSprite = function (eventArgs) {
     this._sprite.setTextureRect(this._defaultRect);
 };
+
+CharacterView.prototype.stopAnimation = function () {
+    this._sprite.stopAllActions();
+}

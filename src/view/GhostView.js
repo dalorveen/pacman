@@ -40,7 +40,8 @@ function GhostView(characterModel) {
     this._lastGhostModes = null;
     this._lastDirection = directions.none;
 
-    gameEvent.pacManDies(this._stopAnimation, this);
+    gameEvent.pacManDies(this.stopAnimation, this);
+    gameEvent.onCompleteLevel(this.stopAnimation, this);
 }
 
 GhostView.prototype = Object.create(CharacterView.prototype);
@@ -113,7 +114,3 @@ GhostView.prototype.draw = function () {
     this._lastGhostModes = ghostModel.getGhostMode();
     this._lastDirection = currentDirection;
 };
-
-GhostView.prototype._stopAnimation = function () {
-    this.getSprite().stopAllActions();
-}

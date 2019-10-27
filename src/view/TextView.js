@@ -77,5 +77,7 @@ TextView.prototype.draw = function () {
     this._labelHighScoreCounter.setString(this._model.getPacMan().getHighScore());
     this._labelLives.setString("x " + this._model.getPacMan().getLives());
     this._labelFruits.setString("x " + this._model.getPacMan().getFruitsEatenAmount());
-    this._labelNotice.setVisible(this._model.isWaiting() && this._model.getPacMan().isAlive());
+    this._labelNotice.setVisible(this._model.isWaiting()
+        && this._model.getPacMan().isAlive()
+        && this._model.getBoard().getRemainingDots() > 0);
 };

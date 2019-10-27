@@ -14,7 +14,8 @@ function Model(tiledMap) {
 
 Model.prototype.update = function (dt) {
     if (this._board.getRemainingDots() <= 0) {
-        this._completeLevel();
+        this._isWaiting = true;
+        this._callAfterDelay(dt, 3, this._completeLevel.bind(this));
     } else if (this._pacMan.isAlive()) {
         if (this._isWaiting) {
             this._callAfterDelay(dt, 2, (function () {
@@ -86,6 +87,8 @@ Model.prototype._restartLevel = function () {
 }
 
 Model.prototype._completeLevel = function () {
+    gameEvent.onCompleteLevel("completeLevel");
+    this._startLevel();
 }
 
 Model.prototype._respawnAllCharacters = function () {

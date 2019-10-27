@@ -35,7 +35,7 @@ var gameEvent = {
         cc.eventManager.addCustomListener("pacManDies", eventHandler, context);
     },
 
-    onPacManpacManDies: function (eventArgs) {
+    onPacManDies: function (eventArgs) {
         cc.eventManager.dispatchCustomEvent("pacManDies", eventArgs);
     },
 
@@ -61,5 +61,13 @@ var gameEvent = {
 
     onNewGame: function (eventArgs) {
         cc.eventManager.dispatchCustomEvent("newGame", eventArgs);
+    },
+
+    completeLevel: function (eventHandler, context) {
+        cc.eventManager.addCustomListener("completeLevel", eventHandler, context);
+    },
+
+    onCompleteLevel: function (eventArgs) {
+        cc.eventManager.dispatchCustomEvent("completeLevel", eventArgs);
     }
 };

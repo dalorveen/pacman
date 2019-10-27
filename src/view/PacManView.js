@@ -43,6 +43,7 @@ function PacManView(pacManModel) {
         cc.rect(148, 106, 20, 20)]);
 
     gameEvent.pacManDies(this._animateDeath, this);
+    gameEvent.onCompleteLevel(this.stopAnimation, this);
 }
 
 PacManView.prototype = Object.create(CharacterView.prototype);

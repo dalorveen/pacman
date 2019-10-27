@@ -10,6 +10,7 @@ function Sound(model) {
     gameEvent.pacManAteGhost(this.eatingGhost, this);
     gameEvent.ghostInCage(this.ghostInCage, this);
     gameEvent.newGame(this.newGame, this);
+    gameEvent.completeLevel(this.completeLevel, this);
 
     this._ghostAudioIdMovingIntoCage = [["blinky", -1], ["pinky", -1], ["inky", -1], ["clyde", -1]];
     this._sirenId = -1;
@@ -56,17 +57,8 @@ Sound.prototype.update = function (dt) {
 };
 
 Sound.prototype.respawnAllCharacters = function () {
-    for (var i = 0; i < 4; i++) {
-        if (this._ghostAudioIdMovingIntoCage[i][1] != -1) {
-            cc.audioEngine.stopEffect(this._ghostAudioIdMovingIntoCage[i][1]);
-            this._ghostAudioIdMovingIntoCage[i][1] = -1;
-        }
-    }
-
-    if (this._sirenAudioId != -1) {
-        cc.audioEngine.stopEffect(this._sirenAudioId);
-        this._sirenAudioId = -1;
-    }
+    this._stopRetreating();
+    this._stopSiren();
 }
 
 Sound.prototype.eatingDot = function () {
@@ -108,6 +100,20 @@ Sound.prototype.ghostInCage = function (eventArgs) {
 
 Sound.prototype.newGame = function () {
     cc.audioEngine.playMusic(res.game_start_wav, false);
+}
+
+Sound.prototype.completeLevel = function () {
+    this._stopRetreating();
+    this._stopSiren();
+}
+
+Sound.prototype._stopRetreating = function () {
+    for (var i = 0; i < 4; i++) {
+        if (this._ghostAudioIdMovingIntoCage[i][1] != -1) {
+            cc.audioEngine.stopEffect(this._ghostAudioIdMovingIntoCage[i][1]);
+            this._ghostAudioIdMovingIntoCage[i][1] = -1;
+        }
+    }
 }
 
 Sound.prototype._stopSiren = function () {
