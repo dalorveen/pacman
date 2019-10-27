@@ -56,6 +56,13 @@ Sound.prototype.update = function (dt) {
 };
 
 Sound.prototype.respawnAllCharacters = function () {
+    for (var i = 0; i < 4; i++) {
+        if (this._ghostAudioIdMovingIntoCage[i][1] != -1) {
+            cc.audioEngine.stopEffect(this._ghostAudioIdMovingIntoCage[i][1]);
+            this._ghostAudioIdMovingIntoCage[i][1] = -1;
+        }
+    }
+
     if (this._sirenAudioId != -1) {
         cc.audioEngine.stopEffect(this._sirenAudioId);
         this._sirenAudioId = -1;
