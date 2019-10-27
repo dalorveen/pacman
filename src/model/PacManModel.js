@@ -44,6 +44,7 @@ PacManModel.prototype.update = function (dt, board) {
         var fruit = board.getFruit(this.coordinatesOfOccupiedTile(board));
         if (fruit !== null && fruit.isVisible()) {
             fruit.setVisible(false);
+            gameEvent.onPacManAteFruit("fruit");
             this._score.add(100);
             this._fruitsEatenAmount++;
         }

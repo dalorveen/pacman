@@ -23,11 +23,43 @@ var gameEvent = {
         cc.eventManager.dispatchCustomEvent("pacManAteEnergizer", eventArgs);
     },
 
+    pacManAteFruit: function (eventHandler, context) {
+        cc.eventManager.addCustomListener("pacManAteFruit", eventHandler, context);
+    },
+
+    onPacManAteFruit: function (eventArgs) {
+        cc.eventManager.dispatchCustomEvent("pacManAteFruit", eventArgs);
+    },
+
     pacManDies: function (eventHandler, context) {
         cc.eventManager.addCustomListener("pacManDies", eventHandler, context);
     },
 
     onPacManpacManDies: function (eventArgs) {
         cc.eventManager.dispatchCustomEvent("pacManDies", eventArgs);
+    },
+
+    pacManAteGhost: function (eventHandler, context) {
+        cc.eventManager.addCustomListener("pacManAteGhost", eventHandler, context);
+    },
+
+    onPacManAteGhost: function (eventArgs) {
+        cc.eventManager.dispatchCustomEvent("pacManAteGhost", eventArgs);
+    },
+
+    ghostInCage: function (eventHandler, context) {
+        cc.eventManager.addCustomListener("ghostInCage", eventHandler, context);
+    },
+
+    onGhostInCage: function (eventArgs) {
+        cc.eventManager.dispatchCustomEvent("ghostInCage", eventArgs);
+    },
+
+    newGame: function (eventHandler, context) {
+        cc.eventManager.addCustomListener("newGame", eventHandler, context);
+    },
+
+    onNewGame: function (eventArgs) {
+        cc.eventManager.dispatchCustomEvent("newGame", eventArgs);
     }
 };

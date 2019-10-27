@@ -29,7 +29,15 @@ var res = {
     munch_1_wav: "res/sound/munch_1.wav",
     munch_2_wav: "res/sound/munch_2.wav",
     power_pellet_wav: "res/sound/power_pellet.wav",
-    death_1_wav: "res/sound/death_1.wav"
+    death_1_wav: "res/sound/death_1.wav",
+    eat_fruit_wav: "res/sound/eat_fruit.wav",
+    eat_ghost_wav: "res/sound/eat_ghost.wav",
+    retreating_wav: "res/sound/retreating.wav",
+    siren_1_wav: "res/sound/siren_1.wav",
+    siren_2_wav: "res/sound/siren_2.wav",
+    siren_3_wav: "res/sound/siren_3.wav",
+    siren_4_wav: "res/sound/siren_4.wav",
+    siren_5_wav: "res/sound/siren_5.wav"
 };
 
 var g_resources = [];

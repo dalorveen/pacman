@@ -75,6 +75,7 @@ GhostModel.prototype.update = function (dt, board, pacManModel) {
         case ghostModes.whiteFrightened:
             if (this.isCollision(board, pacManModel)) {
                 pacManModel.chaseAwayGhost();
+                gameEvent.onPacManAteGhost(this.getName());
                 this._ghostMode = ghostModes.consumed;
                 this._consume(dt, board);
             } else {
@@ -152,6 +153,7 @@ GhostModel.prototype._consume = function (dt, board) {
     if (spawnPointInPixels.x === this.getLocation().x && spawnPointInPixels.y === this.getLocation().y) {
         this._ghostMode = this._getRandomizedInitialGhostMode();
         this._timerInSeconds = this._getRandomizedInitialDurationGhostMode(this._ghostMode);
+        gameEvent.onGhostInCage(this.getName());
     }
 }
 

@@ -32,8 +32,10 @@ Model.prototype.update = function (dt) {
             }
         }
     } else if (this._pacMan.getLives() <= 0) {
+        this._isWaiting = true;
         this._callAfterDelay(dt, 5, this._initializeNewGame.bind(this));
     } else {
+        this._isWaiting = true;
         this._callAfterDelay(dt, 2, this._restartLevel.bind(this));
     }
 };
@@ -71,7 +73,7 @@ Model.prototype._initializeNewGame = function () {
     this._pacMan.resetCurrentScore();
     this._pacMan.resetFruitsEatenAmount();
     this._startLevel();
-    this._isWaiting = true;
+    gameEvent.onNewGame("newGame");
 };
 
 Model.prototype._startLevel = function () {
@@ -81,7 +83,6 @@ Model.prototype._startLevel = function () {
 
 Model.prototype._restartLevel = function () {
     this._respawnAllCharacters();
-    this._isWaiting = true;
 }
 
 Model.prototype._completeLevel = function () {

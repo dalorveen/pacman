@@ -50,7 +50,7 @@ var BoardLayer = cc.Layer.extend({
         
         this.controller = new Controller(this.model);
 
-        this.sound = new Sound();
+        this.sound = new Sound(this.model);
 
         cc.eventManager.addListener({
             event: cc.EventListener.KEYBOARD,
@@ -69,6 +69,7 @@ var BoardLayer = cc.Layer.extend({
     update: function (dt) {
         this.model.update(dt);
         this.view.update(dt);
+        this.sound.update(dt);
     }
 });
 
