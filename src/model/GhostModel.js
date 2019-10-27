@@ -90,6 +90,7 @@ GhostModel.prototype.update = function (dt, board, pacManModel) {
 
 GhostModel.prototype.onFrighten = function (eventArgs) {
     this._ghostMode = ghostModes.blueFrightened;
+    this._timerInSeconds = this._blueFrightenDurationInSeconds;
 }
 
 GhostModel.prototype.getGhostMode = function () {
