@@ -41,6 +41,8 @@ function PacManView(pacManModel) {
         cc.rect(106, 106, 20, 20),
         cc.rect(127, 106, 20, 20),
         cc.rect(148, 106, 20, 20)]);
+
+    gameEvent.pacManDies(this._animateDeath, this);
 }
 
 PacManView.prototype = Object.create(CharacterView.prototype);
@@ -51,12 +53,15 @@ PacManView.prototype.draw = function () {
     CharacterView.prototype.draw.call(this);
 
     var currentDirection = this.getCharacterModel().getCurrentDirection();
-    if (this._lastDirection === currentDirection) {
+    if (!this.getCharacterModel().isAlive()) {
+        return;
+    } else if (this._lastDirection === currentDirection) {
         return;
     } else {
+        this.getSprite().setOpacity(255);
         this._lastDirection = currentDirection;
     }
-
+    
     switch (currentDirection) {
         case directions.none:
             this.getSprite().stopAllActions();
@@ -75,3 +80,9 @@ PacManView.prototype.draw = function () {
             break;
     }
 };
+
+PacManView.prototype._animateDeath = function () {
+    this.getSprite().stopAllActions();
+    var action = cc.FadeTo.create(2, 0);
+    this.getSprite().runAction(action);
+}

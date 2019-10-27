@@ -39,6 +39,8 @@ function GhostView(characterModel) {
 
     this._lastGhostModes = null;
     this._lastDirection = directions.none;
+
+    gameEvent.pacManDies(this._stopAnimation, this);
 }
 
 GhostView.prototype = Object.create(CharacterView.prototype);
@@ -61,28 +63,28 @@ GhostView.prototype.draw = function () {
                     case directions.none:
                         return;
                     case directions.right:
-                        this._movementAnimationToRight.runAnimation(this._sprite);
+                        this._movementAnimationToRight.runAnimation(this.getSprite());
                         break;
                     case directions.left:
-                        this._movementAnimationToLeft.runAnimation(this._sprite);
+                        this._movementAnimationToLeft.runAnimation(this.getSprite());
                         break;
                     case directions.up:
-                        this._movementAnimationToUp.runAnimation(this._sprite);
+                        this._movementAnimationToUp.runAnimation(this.getSprite());
                         break;
                     case directions.down:
-                        this._movementAnimationToDown.runAnimation(this._sprite);
+                        this._movementAnimationToDown.runAnimation(this.getSprite());
                         break;
                 }
             }
             break;
         case ghostModes.blueFrightened:
             if (this._lastGhostModes !== ghostModes.blueFrightened) {
-                this._movementAnimationForBlueFrightened.runAnimation(this._sprite);
+                this._movementAnimationForBlueFrightened.runAnimation(this.getSprite());
             }
             break;
         case ghostModes.whiteFrightened:
             if (this._lastGhostModes !== ghostModes.whiteFrightened) {
-                this._movementAnimationForWhiteFrightened.runAnimation(this._sprite);
+                this._movementAnimationForWhiteFrightened.runAnimation(this.getSprite());
             }
             break;
         case ghostModes.consumed:
@@ -93,16 +95,16 @@ GhostView.prototype.draw = function () {
                     case directions.none:
                         return;
                     case directions.right:
-                        this._movementAnimationToRightConsumed.runAnimation(this._sprite);
+                        this._movementAnimationToRightConsumed.runAnimation(this.getSprite());
                         break;
                     case directions.left:
-                        this._movementAnimationToLeftConsumed.runAnimation(this._sprite);
+                        this._movementAnimationToLeftConsumed.runAnimation(this.getSprite());
                         break;
                     case directions.up:
-                        this._movementAnimationToUpConsumed.runAnimation(this._sprite);
+                        this._movementAnimationToUpConsumed.runAnimation(this.getSprite());
                         break;
                     case directions.down:
-                        this._movementAnimationToDownConsumed.runAnimation(this._sprite);
+                        this._movementAnimationToDownConsumed.runAnimation(this.getSprite());
                         break;
                 }
             }
@@ -111,3 +113,7 @@ GhostView.prototype.draw = function () {
     this._lastGhostModes = ghostModel.getGhostMode();
     this._lastDirection = currentDirection;
 };
+
+GhostView.prototype._stopAnimation = function () {
+    this.getSprite().stopAllActions();
+}
