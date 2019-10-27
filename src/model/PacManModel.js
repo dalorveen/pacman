@@ -61,6 +61,7 @@ PacManModel.prototype.isAlive = function () {
 PacManModel.prototype.die = function () {
     this._isAlive = false;
     this._lives--;
+    gameEvent.onPacManpacManDies("die");
 }
 
 PacManModel.prototype.respawn = function () {

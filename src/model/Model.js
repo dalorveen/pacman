@@ -6,34 +6,35 @@ function Model(tiledMap) {
     this._bashful = new GhostModel(this._board.getSpawnPoint("inky"), "inky");
     this._pokey = new GhostModel(this._board.getSpawnPoint("clyde"), "clyde");
 
+    this._isTimerRunning = false;
     this._timerInSeconds = 0;
     this._initializeNewGame();
-    this._isWaiting = false;
+    this._isWaiting = true;
 }
 
 Model.prototype.update = function (dt) {
-    if (this._isDelay(dt)) {
-        this._isWaiting = true;
-        return;
-    }
-    this._isWaiting = false;
-
     if (this._board.getRemainingDots() <= 0) {
         this._completeLevel();
     } else if (this._pacMan.isAlive()) {
-        this._pacMan.update(dt, this._board);
-        this._shadow.update(dt, this._board, this._pacMan);
-        this._speedy.update(dt, this._board, this._pacMan);
-        this._bashful.update(dt, this._board, this._pacMan);
-        this._pokey.update(dt, this._board, this._pacMan);
+        if (this._isWaiting) {
+            this._callAfterDelay(dt, 2, (function () {
+                this._isWaiting = false;
+            }).bind(this));
+        } else {
+            this._pacMan.update(dt, this._board);
+            this._shadow.update(dt, this._board, this._pacMan);
+            this._speedy.update(dt, this._board, this._pacMan);
+            this._bashful.update(dt, this._board, this._pacMan);
+            this._pokey.update(dt, this._board, this._pacMan);
 
-        if (this._board.getRemainingDots() == 70 || this._board.getRemainingDots() == 170) {
-            this._board.showFruit();
+            if (this._board.getRemainingDots() == 70 || this._board.getRemainingDots() == 170) {
+                this._board.showFruit();
+            }
         }
     } else if (this._pacMan.getLives() <= 0) {
-        this._initializeNewGame();
+        this._callAfterDelay(dt, 5, this._initializeNewGame.bind(this));
     } else {
-        this._restartLevel();
+        this._callAfterDelay(dt, 2, this._restartLevel.bind(this));
     }
 };
 
@@ -70,17 +71,17 @@ Model.prototype._initializeNewGame = function () {
     this._pacMan.resetCurrentScore();
     this._pacMan.resetFruitsEatenAmount();
     this._startLevel();
+    this._isWaiting = true;
 };
 
 Model.prototype._startLevel = function () {
-    this._timerInSeconds = 2;
     this._board.initialize();
     this._respawnAllCharacters();
 }
 
 Model.prototype._restartLevel = function () {
-    this._timerInSeconds = 1;
     this._respawnAllCharacters();
+    this._isWaiting = true;
 }
 
 Model.prototype._completeLevel = function () {
@@ -95,7 +96,15 @@ Model.prototype._respawnAllCharacters = function () {
     gameEvent.onRespawnAllCharacters("respawn");
 }
 
-Model.prototype._isDelay = function (dt) {
-    this._timerInSeconds -= dt;
-    return this._timerInSeconds > 0;
+Model.prototype._callAfterDelay = function (dt, seconds, callback) {
+    if (!this._isTimerRunning) {
+        this._timerInSeconds = 0;
+        this._isTimerRunning = true;
+    }
+
+    this._timerInSeconds += dt;
+    if (this._timerInSeconds >= seconds) {
+        callback();
+        this._isTimerRunning = false;
+    }
 }

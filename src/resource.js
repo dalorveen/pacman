@@ -28,7 +28,8 @@ var res = {
     game_start_wav: "res/sound/game_start.wav",
     munch_1_wav: "res/sound/munch_1.wav",
     munch_2_wav: "res/sound/munch_2.wav",
-    power_pellet_wav: "res/sound/power_pellet.wav"
+    power_pellet_wav: "res/sound/power_pellet.wav",
+    death_1_wav: "res/sound/death_1.wav"
 };
 
 var g_resources = [];

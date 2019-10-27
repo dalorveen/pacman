@@ -21,5 +21,13 @@ var gameEvent = {
 
     onPacManAteEnergizer: function (eventArgs) {
         cc.eventManager.dispatchCustomEvent("pacManAteEnergizer", eventArgs);
+    },
+
+    pacManDies: function (eventHandler, context) {
+        cc.eventManager.addCustomListener("pacManDies", eventHandler, context);
+    },
+
+    onPacManpacManDies: function (eventArgs) {
+        cc.eventManager.dispatchCustomEvent("pacManDies", eventArgs);
     }
 };
