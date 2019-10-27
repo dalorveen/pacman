@@ -24,6 +24,13 @@ GhostModel.prototype = Object.create(CharacterModel.prototype);
 
 GhostModel.prototype.constructor = GhostModel;
 
+GhostModel.prototype.spawn = function () {
+    CharacterModel.prototype.spawn.call(this);
+
+    this._ghostMode = this._getRandomizedInitialGhostMode();
+    this._timerInSeconds = this._getRandomizedInitialDurationGhostMode(this._ghostMode);
+}
+
 GhostModel.prototype.update = function (dt, board, pacManModel) {
     if (this._timerInSeconds <= 0) {
         switch (this._ghostMode) {

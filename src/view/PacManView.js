@@ -55,13 +55,15 @@ PacManView.prototype.draw = function () {
     var currentDirection = this.getCharacterModel().getCurrentDirection();
     if (!this.getCharacterModel().isAlive()) {
         return;
-    } else if (this._lastDirection === currentDirection) {
-        return;
     } else {
         this.getSprite().setOpacity(255);
-        this._lastDirection = currentDirection;
+        if (this._lastDirection === currentDirection) {
+            return;
+        } else {
+            this._lastDirection = currentDirection;
+        }
     }
-    
+
     switch (currentDirection) {
         case directions.none:
             this.getSprite().stopAllActions();
