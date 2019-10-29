@@ -88,7 +88,7 @@ Board.prototype.initialize = function () {
                 this._numberOfDots++;
             }
 
-            let fruit = this.getFruit(p);
+            var fruit = this.getFruit(p);
             if (fruit !== null) {
                 this._fruit = fruit;
                 this._fruit.setVisible(false);
